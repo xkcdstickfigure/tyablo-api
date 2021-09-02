@@ -1,0 +1,39 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialActions", "selectRelationCount"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id          String    @id @db.Char(16)
+  name        String    @db.VarChar(35)
+  pronoun     String?   @db.VarChar(35)
+  description String?   @db.VarChar(128)
+  country     String?   @db.Char(3)
+  phone       String?   @unique @db.VarChar(32)
+  score       Int       @default(0) @db.UnsignedInt
+  suspendedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  lat               Decimal?  @db.Decimal(9, 7)
+  lon               Decimal?  @db.Decimal(10, 7)
+  locationUpdatedAt DateTime?
+
+  sessions session[]
+}
+
+model session {
+  id        String    @id @db.Char(16)
+  token     String    @unique @db.Char(128)
+  address   String    @db.VarChar(64)
+  primary   Boolean   @default(false)
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user   user   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @db.Char(16)
+}
