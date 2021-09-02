@@ -37,3 +37,12 @@ model session {
   user   user   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @db.Char(16)
 }
+
+model phoneAuth {
+  id        String    @id @db.Char(16)
+  number    String    @db.VarChar(32)
+  code      String    @db.Char(8)
+  address   String    @db.VarChar(64)
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+}
