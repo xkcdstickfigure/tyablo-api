@@ -8,5 +8,8 @@ const auth = require("./auth");
 api.post("/login/phone", require("./login/phone"));
 api.post("/login/code", require("./login/code"));
 
+// Set Location
+api.post("/location", auth, require("./location"));
+
 // Home
 api.get("/home", auth, require("./home"));
