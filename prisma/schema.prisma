@@ -24,7 +24,9 @@ model user {
   lon               Decimal?  @db.Decimal(10, 7)
   locationUpdatedAt DateTime?
 
-  sessions session[]
+  sessions      session[]
+  subscriptions pageSubscription[]
+  pages         pageManager[]
 }
 
 model session {
@@ -46,4 +48,45 @@ model phoneAuth {
   address   String    @db.VarChar(64)
   usedAt    DateTime?
   createdAt DateTime  @default(now())
+}
+
+model page {
+  id          String   @id @db.Char(16)
+  name        String   @db.VarChar(35)
+  description String?  @db.VarChar(128)
+  country     String?  @db.Char(3)
+  lat         Decimal? @db.Decimal(9, 7)
+  lon         Decimal? @db.Decimal(10, 7)
+  url         String?  @db.VarChar(64)
+  email       String?  @db.VarChar(64)
+  phone       String?  @db.VarChar(32)
+  createdAt   DateTime @default(now())
+
+  subscribers pageSubscription[]
+  managers    pageManager[]
+}
+
+model pageSubscription {
+  user   user   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @db.Char(16)
+
+  page   page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  pageId String @db.Char(16)
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, pageId])
+}
+
+model pageManager {
+  user   user   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @db.Char(16)
+
+  page   page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  pageId String @db.Char(16)
+
+  owner     Boolean
+  createdAt DateTime @default(now())
+
+  @@id([userId, pageId])
 }
