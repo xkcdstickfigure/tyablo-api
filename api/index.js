@@ -16,3 +16,4 @@ api.get("/home", auth, require("./home"));
 
 // Post
 api.post("/post", auth, require("./post/create"));
+api.delete("/post/:id", auth, require("./post/delete"));
