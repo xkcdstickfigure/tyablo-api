@@ -30,6 +30,7 @@ module.exports = async (req, res) => {
   if (typeof name === "string") {
     name = name.trim();
     if (!name || name.length > 35) return res.status(400).send("Bad Request");
+
     user = await db.user.upsert({
       where: { phone: phoneAuth.number },
       create: { id: uid, name, phone: phoneAuth.number },
