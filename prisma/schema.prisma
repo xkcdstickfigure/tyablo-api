@@ -27,6 +27,7 @@ model user {
   sessions      session[]
   subscriptions pageSubscription[]
   pages         pageManager[]
+  posts         post[]
 }
 
 model session {
@@ -64,6 +65,7 @@ model page {
 
   subscribers pageSubscription[]
   managers    pageManager[]
+  posts       post[]
 }
 
 model pageSubscription {
@@ -89,4 +91,19 @@ model pageManager {
   createdAt DateTime @default(now())
 
   @@id([userId, pageId])
+}
+
+model post {
+  id        String    @id @db.Char(16)
+  content   String    @db.VarChar(2000)
+  lat       Decimal?  @db.Decimal(9, 7)
+  lon       Decimal?  @db.Decimal(10, 7)
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  user   user?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId String? @db.Char(16)
+
+  page   page?   @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  pageId String? @db.Char(16)
 }
