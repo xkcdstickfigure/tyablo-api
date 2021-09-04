@@ -9,15 +9,16 @@ datasource db {
 }
 
 model user {
-  id          String    @id @db.Char(16)
-  name        String    @db.VarChar(35)
-  pronoun     String?   @db.VarChar(35)
-  description String?   @db.VarChar(128)
-  country     String?   @db.Char(3)
-  phone       String?   @unique @db.VarChar(32)
-  score       Int       @default(0) @db.UnsignedInt
-  suspendedAt DateTime?
-  createdAt   DateTime  @default(now())
+  id           String    @id @db.Char(16)
+  name         String    @db.VarChar(35)
+  pronoun      String?   @db.VarChar(35)
+  description  String?   @db.VarChar(128)
+  country      String?   @db.Char(3)
+  phone        String?   @unique @db.VarChar(32)
+  score        Int       @default(0) @db.UnsignedInt
+  discoverable Boolean   @default(false)
+  suspendedAt  DateTime?
+  createdAt    DateTime  @default(now())
 
   lat               Decimal?  @db.Decimal(9, 7)
   lon               Decimal?  @db.Decimal(10, 7)
