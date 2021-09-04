@@ -4,7 +4,8 @@ const nanoid = require("../../util/id");
 module.exports = async (req, res) => {
   const { user, primary } = req.session;
   const location =
-    primary && user.locationUpdatedAt > new Date().getTime() - 1000 * 60 * 10;
+    primary &&
+    user.locationUpdatedAt > new Date().getTime() - 1000 * 60 * 60 * 24;
 
   let { content } = req.body;
   if (typeof content !== "string") return res.status(400).send("Bad Request");
