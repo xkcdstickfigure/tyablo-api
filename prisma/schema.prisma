@@ -28,6 +28,7 @@ model user {
   subscriptions pageSubscription[]
   pages         pageManager[]
   posts         post[]
+  likes         like[]
 }
 
 model session {
@@ -106,4 +107,18 @@ model post {
 
   page   page?   @relation(fields: [pageId], references: [id], onDelete: Cascade)
   pageId String? @db.Char(16)
+
+  likes like[]
+}
+
+model like {
+  user   user   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @db.Char(16)
+
+  post   post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String @db.Char(16)
+
+  createdAt DateTime @default(now())
+
+  @@id([userId, postId])
 }
