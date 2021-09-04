@@ -13,3 +13,6 @@ api.post("/location", auth, require("./location"));
 
 // Home
 api.get("/home", auth, require("./home"));
+
+// Post
+api.post("/post", auth, require("./post/create"));
