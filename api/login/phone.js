@@ -9,11 +9,15 @@ module.exports = async (req, res) => {
     typeof number !== "string" ||
     !number ||
     number.length > 16 ||
-    number.replace(/\D/g, "") !== number ||
+    number.replace(/\D/g, "") !== number
+  )
+    return res.status(400).send("Bad Request");
+
+  if (
     !isValidNumber(number) ||
     !number.startsWith("44") // Only allow +44 numbers
   )
-    return res.status(400).send("Bad Request");
+    return res.status(400).send("Invalid Phone Number");
 
   // Count PhoneAuth records
   const count = await db.phoneAuth.count({
