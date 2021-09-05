@@ -71,8 +71,24 @@ module.exports = async (req, res) => {
       createdAt: "desc",
     },
     include: {
-      user: true,
-      page: true,
+      user: {
+        include: {
+          followers: {
+            where: {
+              followerId: user.id,
+            },
+          },
+        },
+      },
+      page: {
+        include: {
+          subscribers: {
+            where: {
+              userId: user.id,
+            },
+          },
+        },
+      },
       likes: {
         where: {
           userId: user.id,
@@ -92,13 +108,15 @@ module.exports = async (req, res) => {
       id: post.id,
       author: post.page
         ? {
-            page: true,
             id: post.page.id,
+            page: true,
+            following: !!post.page.subscribers.length,
             name: post.page.name,
           }
         : {
-            page: false,
             id: post.user.id,
+            page: false,
+            following: !!post.user.followers.length,
             name: post.user.name,
           },
       content: post.content,
