@@ -29,6 +29,8 @@ model user {
   pages         pageManager[]
   posts         post[]
   likes         like[]
+  followers     follow[]           @relation(name: "followers")
+  following     follow[]           @relation(name: "following")
 }
 
 model session {
@@ -41,6 +43,18 @@ model session {
 
   user   user   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @db.Char(16)
+}
+
+model follow {
+  following   user   @relation(name: "followers", fields: [followingId], references: [id], onDelete: Cascade)
+  followingId String @db.Char(16)
+
+  follower   user   @relation(name: "following", fields: [followerId], references: [id], onDelete: Cascade)
+  followerId String @db.Char(16)
+
+  createdAt DateTime @default(now())
+
+  @@id([followingId, followerId])
 }
 
 model phoneAuth {
