@@ -14,6 +14,9 @@ api.post("/location", auth, require("./location"));
 // Home
 api.get("/home", auth, require("./home"));
 
+// Feed
+api.get("/feed", auth, require("./feed"));
+
 // Post
 api.post("/post", auth, require("./post/create"));
 api.delete("/post/:id", auth, require("./post/delete"));
