@@ -23,6 +23,22 @@ module.exports = async (req, res) => {
             },
             // Self
             { userId: user.id },
+            // Nearby Posts
+            user.locationUpdatedAt > new Date().getTime() - 1000 * 60 * 60 * 24
+              ? {
+                  lat: {
+                    gte: user.lat - 0.1,
+                    lte: user.lat + 0.1,
+                  },
+                  lon: {
+                    gte: user.lon - 0.1,
+                    lte: user.lon + 0.1,
+                  },
+                  user: {
+                    discoverable: true,
+                  },
+                }
+              : null,
           ],
         },
         // Pages
