@@ -22,3 +22,7 @@ api.post("/post", auth, require("./post/create"));
 api.delete("/post/:id", auth, require("./post/delete"));
 api.post("/post/:id/like", auth, require("./post/like"));
 api.delete("/post/:id/like", auth, require("./post/unlike"));
+
+// User
+api.post("/user/:id/follow", auth, require("./user/follow.js"));
+api.delete("/user/:id/follow", auth, require("./user/unfollow.js"));
