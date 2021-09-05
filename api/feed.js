@@ -27,12 +27,12 @@ module.exports = async (req, res) => {
             user.locationUpdatedAt > new Date().getTime() - 1000 * 60 * 60 * 24
               ? {
                   lat: {
-                    gte: user.lat - 0.1,
-                    lte: user.lat + 0.1,
+                    gte: Number(user.lat) - 0.1,
+                    lte: Number(user.lat) + 0.1,
                   },
                   lon: {
-                    gte: user.lon - 0.1,
-                    lte: user.lon + 0.1,
+                    gte: Number(user.lon) - 0.1,
+                    lte: Number(user.lon) + 0.1,
                   },
                   user: {
                     discoverable: true,
