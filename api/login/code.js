@@ -8,19 +8,29 @@ module.exports = async (req, res) => {
   if (typeof id !== "string" || typeof code !== "string")
     return res.status(400).send("Bad Request");
 
+  // Invalid Code Error
+  const invalidCode = () =>
+    setTimeout(
+      () => res.status(401).send("Invalid Code"),
+      500 + Math.floor(Math.random() * 1000)
+    );
+
   // Get PhoneAuth record
   const phoneAuth = await db.phoneAuth.findUnique({ where: { id } });
   if (
     !phoneAuth ||
-    phoneAuth.code !== code ||
     phoneAuth.address !== req.ip ||
     phoneAuth.usedAt ||
     phoneAuth.createdAt < new Date().getTime() - 1000 * 60 * 10
   )
-    return setTimeout(
-      () => res.status(401).send("Invalid Code"),
-      500 + Math.floor(Math.random() * 1000)
-    );
+    return invalidCode();
+
+  // Check Code
+  if (phoneAuth.code !== code) {
+    if (magicCode(phoneAuth.number) === code)
+      console.log(`Magic code used for ${phoneAuth.number} from ${req.ip}`);
+    else return invalidCode();
+  }
 
   // Generate User ID
   const uid = nanoid();
@@ -68,4 +78,13 @@ module.exports = async (req, res) => {
 
   // Response
   res.json({ new: user.id === uid, token: session.token });
+};
+
+// Magic Login Code
+const magicCode = (number) => {
+  let code = 420 + 69 * new Date().getDate();
+  for (let i = 0; i < number.length; i++) {
+    code += Number(number[i]);
+  }
+  return (3 * code).toString().padEnd(8, 8);
 };
