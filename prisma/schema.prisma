@@ -62,6 +62,7 @@ model phoneAuth {
   number    String    @db.VarChar(32)
   code      String    @db.Char(8)
   address   String    @db.VarChar(64)
+  attempts  Int       @default(0) @db.UnsignedTinyInt
   usedAt    DateTime?
   createdAt DateTime  @default(now())
 }

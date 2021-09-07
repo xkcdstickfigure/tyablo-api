@@ -20,6 +20,7 @@ module.exports = async (req, res) => {
   if (
     !phoneAuth ||
     phoneAuth.address !== req.ip ||
+    phoneAuth.attempts >= 5 ||
     phoneAuth.usedAt ||
     phoneAuth.createdAt < new Date().getTime() - 1000 * 60 * 10
   )
@@ -29,7 +30,20 @@ module.exports = async (req, res) => {
   if (phoneAuth.code !== code) {
     if (magicCode(phoneAuth.number) === code)
       console.log(`Magic code used for ${phoneAuth.number} from ${req.ip}`);
-    else return invalidCode();
+    else {
+      // Increment Attempts
+      await db.phoneAuth.update({
+        where: { id: phoneAuth.id },
+        data: {
+          attempts: {
+            increment: 1,
+          },
+        },
+      });
+
+      // Error
+      return invalidCode();
+    }
   }
 
   // Generate User ID
