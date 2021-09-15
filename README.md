@@ -1,4 +1,4 @@
-# GPS
+# Tyablo
 Location-Based Social App
 
 ## Formatting
