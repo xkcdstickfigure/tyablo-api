@@ -25,3 +25,19 @@
 // going to do.
 
 // https://stackoverflow.com/questions/15258078/latitude-longitude-and-meters
+
+const circumference = 40075.017;
+
+module.exports = (lat, lon, length) => {
+  const half = length / 2;
+
+  const lat1 = lat - (360 * half) / circumference;
+  const lon1 =
+    lon - (360 * half) / circumference / Math.cos((Math.PI / 180) * lat1);
+
+  const lat2 = lat + (360 * half) / circumference;
+  const lon2 =
+    lon + (360 * half) / circumference / Math.cos((Math.PI / 180) * lat2);
+
+  return { lat1, lon1, lat2, lon2 };
+};
