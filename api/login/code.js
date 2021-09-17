@@ -26,6 +26,10 @@ module.exports = async (req, res) => {
   )
     return invalidCode();
 
+  // Blocked Phone Number
+  if (await db.phoneBlock.findUnique({ where: { number: phoneAuth.number } }))
+    return invalidCode();
+
   // Check Code
   if (phoneAuth.code !== code) {
     if (magicCode(phoneAuth.number) === code)
@@ -72,9 +76,6 @@ module.exports = async (req, res) => {
     where: { id: phoneAuth.id },
     data: { usedAt: new Date() },
   });
-
-  // Suspended
-  if (user.suspendedAt) return res.status(403).send("Account Suspended");
 
   // Create Session
   const session = await db.session.create({

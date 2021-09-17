@@ -19,6 +19,10 @@ module.exports = async (req, res) => {
   )
     return res.status(400).send("Invalid Phone Number");
 
+  // Blocked Phone Number
+  if (await db.phoneBlock.findUnique({ where: { number } }))
+    return res.status(400).send("Invalid Phone Number");
+
   // Count PhoneAuth records
   const count = await db.phoneAuth.count({
     where: {
