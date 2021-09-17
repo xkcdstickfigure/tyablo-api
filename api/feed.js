@@ -1,7 +1,13 @@
 const db = require("../prisma");
+const square = require("../util/square");
 
 module.exports = async (req, res) => {
   const { user } = req.session;
+
+  // Nearby Area
+  const nearby =
+    user.locationUpdatedAt > new Date().getTime() - 1000 * 60 * 60 * 24 &&
+    square(Number(user.lat), Number(user.lon), 0.5);
 
   // Get Posts
   const posts = await db.post.findMany({
@@ -24,15 +30,15 @@ module.exports = async (req, res) => {
             // Self
             { userId: user.id },
             // Nearby Posts
-            user.locationUpdatedAt > new Date().getTime() - 1000 * 60 * 60 * 24
+            nearby
               ? {
                   lat: {
-                    gte: Number(user.lat) - 0.1,
-                    lte: Number(user.lat) + 0.1,
+                    gte: nearby.lat1,
+                    lte: nearby.lat2,
                   },
                   lon: {
-                    gte: Number(user.lon) - 0.1,
-                    lte: Number(user.lon) + 0.1,
+                    gte: nearby.lon1,
+                    lte: nearby.lon2,
                   },
                   user: {
                     discoverable: true,
