@@ -3,6 +3,10 @@ const square = require("../util/square");
 
 module.exports = async (req, res) => {
   const { user } = req.session;
+  const { before } = req.query;
+
+  // Before Date Offset
+  const beforeDate = typeof before === "string" && new Date(Number(before));
 
   // Nearby Area
   const nearby =
@@ -73,9 +77,11 @@ module.exports = async (req, res) => {
       ],
       createdAt: {
         gte: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * 2),
+        lt: beforeDate && beforeDate.valueOf() ? beforeDate : undefined,
       },
       deletedAt: null,
     },
+    take: 20,
     orderBy: {
       createdAt: "desc",
     },
