@@ -11,6 +11,9 @@ api.post("/login/code", require("./login/code"));
 // Set Location
 api.post("/location", auth, require("./location"));
 
+// Account
+api.post("/account", auth, require("./account/update"));
+
 // Home
 api.get("/home", auth, require("./home"));
 
