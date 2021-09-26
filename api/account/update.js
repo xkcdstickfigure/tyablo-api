@@ -1,7 +1,11 @@
+const { FILE_STORE } = process.env;
 const db = require("../../prisma");
+const sharp = require("sharp");
+const fileStore = require("../../util/fileStore");
 
 module.exports = async (req, res) => {
   const { user } = req.session;
+  const { avatar } = req.body;
   let { name, pronoun, description, discoverable } = req.body;
   const update = {};
 
@@ -30,6 +34,31 @@ module.exports = async (req, res) => {
 
   // Discoverable
   if (typeof discoverable === "boolean") update.discoverable = discoverable;
+
+  // Avatar
+  if (typeof avatar === "string") {
+    try {
+      let img = Buffer.from(avatar.split(";base64,")[1], "base64");
+      img = await sharp(img)
+        .resize({
+          width: 256,
+          height: 256,
+          fit: "cover",
+        })
+        .flatten({
+          background: {
+            r: 255,
+            g: 255,
+            b: 255,
+          },
+        })
+        .png();
+
+      const path = fileStore() + "/avatar.png";
+      await img.toFile(FILE_STORE + path);
+      update.avatar = path;
+    } catch (err) {}
+  }
 
   // Update
   await db.user.update({

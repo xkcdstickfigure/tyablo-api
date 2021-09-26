@@ -12,6 +12,7 @@ model user {
   name         String   @db.VarChar(35)
   pronoun      String?  @db.VarChar(35)
   description  String?  @db.VarChar(128)
+  avatar       String?  @db.VarChar(64)
   country      String?  @db.Char(3)
   phone        String?  @unique @db.VarChar(32)
   score        Int      @default(0) @db.UnsignedInt
