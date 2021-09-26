@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { PORT } = process.env;
+const { PORT, FILE_STORE } = process.env;
 
 const express = require("express");
 const app = express();
@@ -9,6 +9,9 @@ app.listen(PORT || 8080, () => console.log("Server is listening"));
 
 // API
 app.use("/api/v1", require("./api"));
+
+// File Storage
+app.use("/fs", express.static(FILE_STORE));
 
 // Error
 app.use((_req, res) => res.status(404).send("Not Found"));
