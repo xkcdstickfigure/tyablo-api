@@ -1,3 +1,4 @@
+const { ORIGIN } = process.env;
 const db = require("../prisma");
 const square = require("../util/square");
 
@@ -127,12 +128,16 @@ module.exports = async (req, res) => {
             page: true,
             following: !!post.page.subscribers.length,
             name: post.page.name,
+            avatar: null,
           }
         : {
             id: post.user.id,
             page: false,
             following: !!post.user.followers.length,
             name: post.user.name,
+            avatar: post.user.avatar
+              ? `${ORIGIN}/fs/${post.user.avatar}`
+              : null,
           },
       content: post.content,
       createdAt: post.createdAt,

@@ -56,7 +56,7 @@ module.exports = async (req, res) => {
 
       const path = fileStore() + "/avatar.png";
       await img.toFile(FILE_STORE + path);
-      update.avatar = path;
+      update.avatar = path.substr(1);
     } catch (err) {}
   }
 
