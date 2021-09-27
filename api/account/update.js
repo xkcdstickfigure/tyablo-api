@@ -38,23 +38,6 @@ module.exports = async (req, res) => {
 
   // Avatar
   if (typeof avatar === "string") {
-    const count = await db.avatar.count({
-      where: {
-        userId: user.id,
-        createdAt: {
-          gte: new Date(new Date().getTime() - 1000 * 60 * 10),
-        },
-      },
-    });
-    if (count >= 3) return res.status(429).send("Avatar Ratelimit");
-
-    const { id: avatarId } = await db.avatar.create({
-      data: {
-        id: nanoid(),
-        userId: user.id,
-      },
-    });
-
     try {
       let img = Buffer.from(avatar.split(";base64,")[1], "base64");
       img = await sharp(img)
@@ -73,13 +56,15 @@ module.exports = async (req, res) => {
         .png();
 
       const path = fileStore() + "/avatar.png";
+      await db.upload.create({
+        data: {
+          id: nanoid(),
+          path,
+          userId: user.id,
+        },
+      });
       await img.toFile(`${FILE_STORE}/${path}`);
       update.avatar = path;
-
-      await db.avatar.update({
-        where: { id: avatarId },
-        data: { path },
-      });
     } catch (err) {}
   }
 
