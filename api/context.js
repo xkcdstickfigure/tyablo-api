@@ -28,6 +28,7 @@ module.exports = async (req, res) => {
     pages: pages.map((p) => ({
       id: p.id,
       name: p.name,
+      avatar: p.avatar ? `${ORIGIN}/fs/${p.avatar}` : `${ORIGIN}/s/pavatar.png`,
     })),
   });
 };

@@ -85,6 +85,7 @@ model page {
   id          String   @id @db.Char(16)
   name        String   @db.VarChar(35)
   description String?  @db.VarChar(128)
+  avatar      String?  @db.VarChar(64)
   country     String?  @db.Char(3)
   lat         Decimal? @db.Decimal(9, 7)
   lon         Decimal? @db.Decimal(10, 7)

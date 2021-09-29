@@ -128,7 +128,9 @@ module.exports = async (req, res) => {
             page: true,
             following: !!post.page.subscribers.length,
             name: post.page.name,
-            avatar: `${ORIGIN}/s/uavatar.png`,
+            avatar: post.page.avatar
+              ? `${ORIGIN}/fs/${post.page.avatar}`
+              : `${ORIGIN}/s/pavatar.png`,
           }
         : {
             id: post.user.id,
