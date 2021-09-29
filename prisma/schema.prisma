@@ -126,6 +126,7 @@ model pageManager {
 model post {
   id        String    @id @db.Char(16)
   content   String    @db.VarChar(2000)
+  image     String?   @db.VarChar(64)
   lat       Decimal?  @db.Decimal(9, 7)
   lon       Decimal?  @db.Decimal(10, 7)
   createdAt DateTime  @default(now())

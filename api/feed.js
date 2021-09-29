@@ -140,6 +140,7 @@ module.exports = async (req, res) => {
               : `${ORIGIN}/s/uavatar.png`,
           },
       content: post.content,
+      image: post.image && `${ORIGIN}/fs/${post.image}`,
       createdAt: post.createdAt,
       likes: {
         count: post._count.likes,

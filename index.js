@@ -4,7 +4,7 @@ const { PORT, FILE_STORE } = process.env;
 const express = require("express");
 const app = express();
 app.set("trust proxy", 1);
-app.use(require("body-parser").json());
+app.use(require("body-parser").json({ limit: "5mb" }));
 app.listen(PORT || 8080, () => console.log("Server is listening"));
 
 // API
