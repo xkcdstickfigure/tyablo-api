@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
     primary &&
     user.locationUpdatedAt > new Date().getTime() - 1000 * 60 * 60 * 24;
 
-  const { image } = req.body;
+  const { image, page: pageId } = req.body;
   let { content } = req.body;
   if (typeof content !== "string") return res.status(400).send("Bad Request");
 
@@ -29,6 +29,23 @@ module.exports = async (req, res) => {
     },
   });
   if (count >= 30) return res.status(429).send("Too Many Requests");
+
+  // Page
+  let page;
+  if (typeof pageId === "string") {
+    page = await db.page.findUnique({ where: { id: pageId } });
+    if (!page) return res.status(400).send("Not Manager Of Page");
+
+    const manager = await db.pageManager.findUnique({
+      where: {
+        userId_pageId: {
+          userId: user.id,
+          pageId: page.id,
+        },
+      },
+    });
+    if (!manager) return res.status(400).send("Not Manager Of Page");
+  }
 
   // Image
   let imgPath;
@@ -79,6 +96,7 @@ module.exports = async (req, res) => {
       lat: location ? user.lat : null,
       lon: location ? user.lon : null,
       userId: user.id,
+      pageId: page?.id,
     },
   });
 
