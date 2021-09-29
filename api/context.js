@@ -13,6 +13,9 @@ module.exports = async (req, res) => {
         },
       },
     },
+    orderBy: {
+      name: "asc",
+    },
   });
 
   res.json({
