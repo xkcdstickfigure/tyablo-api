@@ -6,7 +6,9 @@ module.exports = (req, res) => {
   res.json({
     id: user.id,
     name: user.name,
-    avatar: user.avatar ? `${ORIGIN}/fs/${user.avatar}` : null,
+    avatar: user.avatar
+      ? `${ORIGIN}/fs/${user.avatar}`
+      : `${ORIGIN}/s/uavatar.png`,
     phone: intlFormat(user.phone),
     score: user.score,
   });

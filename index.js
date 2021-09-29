@@ -13,6 +13,9 @@ app.use("/api/v1", require("./api"));
 // File Storage
 app.use("/fs", express.static(FILE_STORE));
 
+// Static Files
+app.use("/s", express.static("./static"));
+
 // Error
 app.use((_req, res) => res.status(404).send("Not Found"));
 app.use((_err, _req, res, _next) => res.status(500).send("Internal Error"));
