@@ -8,14 +8,26 @@ module.exports = async (req, res) => {
   const post = await db.post.findUnique({ where: { id } });
   if (!post || post.deletedAt) return res.status(429).send("Missing Resource");
 
+  // Check Page Manager
+  let manager;
+  if (post.pageId) {
+    manager = await db.pageManager.findUnique({
+      where: {
+        userId_pageId: {
+          userId: user.id,
+          pageId: post.pageId,
+        },
+      },
+    });
+  }
+
   // Delete Post
-  if (post.userId === user.id) {
+  if (post.pageId ? manager : post.userId === user.id) {
     await db.post.update({
       where: { id: post.id },
       data: { deletedAt: new Date() },
     });
-  }
 
-  // Response
-  res.status(204).send();
+    res.status(204).send();
+  } else res.status(403).send("Not Owner Of Post");
 };
