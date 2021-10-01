@@ -22,6 +22,7 @@ api.get("/feed", auth, require("./feed"));
 
 // Post
 api.post("/post", auth, require("./post/create"));
+api.get("/post/:id", auth, require("./post/get"));
 api.delete("/post/:id", auth, require("./post/delete"));
 api.post("/post/:id/like", auth, require("./post/like"));
 api.delete("/post/:id/like", auth, require("./post/unlike"));
