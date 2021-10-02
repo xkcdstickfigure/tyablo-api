@@ -13,10 +13,7 @@ module.exports = async (req, res) => {
   )
     return res.status(400).send("Bad Request");
 
-  if (
-    !isValidNumber(number) ||
-    !number.startsWith("44") // Only allow +44 numbers
-  )
+  if (!isValidNumber(number))
     return res.status(400).send("Invalid Phone Number");
 
   // Blocked Phone Number
