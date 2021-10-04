@@ -27,6 +27,7 @@ module.exports = async (req, res) => {
         : `${ORIGIN}/s/uavatar.png`,
       phone: intlFormat(user.phone),
       score: user.score,
+      discoverable: user.discoverable,
     },
     pages: pages.map((p) => ({
       id: p.id,
