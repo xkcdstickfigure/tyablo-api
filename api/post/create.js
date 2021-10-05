@@ -83,7 +83,7 @@ module.exports = async (req, res) => {
       fs.writeFileSync(`${FILE_STORE}/${path}`, img);
       imgPath = path;
     } catch (err) {
-      return res.status(400).send("Attachment Upload Failed");
+      return res.status(422).send("Attachment Upload Failed");
     }
   }
 
