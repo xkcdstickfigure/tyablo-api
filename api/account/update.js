@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
   if (typeof description === "string") {
     description = description.trim();
     if (description.length > 128)
-      return res.status(400).send("Pronoun is too long");
+      return res.status(400).send("Description is too long");
     update.description = description || null;
   }
 
