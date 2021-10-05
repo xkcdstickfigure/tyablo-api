@@ -31,3 +31,7 @@ api.delete("/post/:id/like", auth, require("./post/unlike"));
 // User
 api.post("/user/:id/follow", auth, require("./user/follow"));
 api.delete("/user/:id/follow", auth, require("./user/unfollow"));
+
+// Page
+api.post("/page/:id/follow", auth, require("./page/follow"));
+api.delete("/page/:id/follow", auth, require("./page/unfollow"));
