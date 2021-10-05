@@ -15,6 +15,7 @@ api.get("/context", auth, require("./context"));
 api.post("/location", auth, require("./location"));
 
 // Account
+api.get("/account", auth, require("./account/get"));
 api.post("/account", auth, require("./account/update"));
 
 // Feed
