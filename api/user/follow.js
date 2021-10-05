@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
 
   // Get User
   const user2 = await db.user.findUnique({ where: { id } });
-  if (!user2) return res.status(400).send("Missing Resource");
+  if (!user2) return res.status(404).send("Missing Resource");
 
   // Prevent Self Follow
   if (user.id === user2.id)

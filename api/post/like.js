@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
 
   // Get Post
   const post = await db.post.findUnique({ where: { id } });
-  if (!post || post.deletedAt) return res.status(400).send("Missing Resource");
+  if (!post || post.deletedAt) return res.status(404).send("Missing Resource");
 
   // Create Like
   await db.like.upsert({

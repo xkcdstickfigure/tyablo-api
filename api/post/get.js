@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
     },
   });
   if (!post || post.deletedAt || (!post.user && !post.page))
-    return res.status(400).send("Missing Resource");
+    return res.status(404).send("Missing Resource");
 
   // Check Page Manager
   let manager;
