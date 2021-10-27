@@ -119,4 +119,4 @@ const magicCode = (number) => {
 const addStr = (key, val, maxLength) =>
   typeof val === "string" &&
   val.trim() &&
-  val.trim().length <= maxLength && { [key]: val };
+  val.trim().length <= maxLength && { [key]: val.trim() };
