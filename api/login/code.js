@@ -3,9 +3,13 @@ const nanoid = require("../../util/id");
 const { generate: randomString } = require("randomstring");
 
 module.exports = async (req, res) => {
-  const { id, code } = req.body;
+  const { id, code, device } = req.body;
   let { name } = req.body;
-  if (typeof id !== "string" || typeof code !== "string")
+  if (
+    typeof id !== "string" ||
+    typeof code !== "string" ||
+    (typeof device !== "undefined" && typeof device !== "object")
+  )
     return res.status(400).send("Bad Request");
 
   // Invalid Code Error
@@ -85,6 +89,13 @@ module.exports = async (req, res) => {
       address: phoneAuth.address,
       usedAt: new Date(),
       userId: user.id,
+      ...addStr("deviceBrand", device?.brand, 16),
+      ...addStr("deviceModel", device?.model, 32),
+      ...((device?.platform === "ios" || device?.platform === "android") && {
+        devicePlatform: device.platform.toUpperCase(),
+      }),
+      ...addStr("deviceVersion", device?.version, 16),
+      ...addStr("deviceName", device?.name, 32),
     },
   });
 
@@ -103,3 +114,9 @@ const magicCode = (number) => {
   }
   return (3 * code).toString().padEnd(8, 8);
 };
+
+// Add string if valid
+const addStr = (key, val, maxLength) =>
+  typeof val === "string" &&
+  val.trim() &&
+  val.trim().length <= maxLength && { [key]: val };

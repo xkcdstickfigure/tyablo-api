@@ -41,6 +41,12 @@ model session {
   usedAt    DateTime?
   createdAt DateTime  @default(now())
 
+  deviceBrand    String?   @db.Char(16)
+  deviceModel    String?   @db.Char(32)
+  devicePlatform Platform?
+  deviceVersion  String?   @db.Char(16)
+  deviceName     String?   @db.Char(32)
+
   user   user   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @db.Char(16)
 }
@@ -152,4 +158,9 @@ model like {
   createdAt DateTime @default(now())
 
   @@id([userId, postId])
+}
+
+enum Platform {
+  IOS
+  ANDROID
 }
