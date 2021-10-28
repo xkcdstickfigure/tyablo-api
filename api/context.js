@@ -35,6 +35,6 @@ module.exports = async (req, res) => {
       avatar: p.avatar ? `${ORIGIN}/fs/${p.avatar}` : `${ORIGIN}/s/pavatar.png`,
     })),
     notice:
-      "Tyablo is currently in development, so some things may not work as expected. Please report bugs in our Discord server.",
+      "Tyablo is currently in development, so some things may not work as expected. Please report any bugs and give feedback to Archie!",
   });
 };
