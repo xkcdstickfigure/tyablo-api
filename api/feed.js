@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
   // Nearby Area
   const nearby =
     user.locationUpdatedAt > new Date().getTime() - 1000 * 60 * 60 * 24 &&
-    square(Number(user.lat), Number(user.lon), 0.5);
+    square(Number(user.lat), Number(user.lon), 5);
 
   // Get Posts
   const posts = await db.post.findMany({
